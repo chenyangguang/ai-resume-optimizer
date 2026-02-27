@@ -30,7 +30,7 @@ function App() {
             </div>
             <div className="flex items-center space-x-2">
               <span className="text-sm text-gray-500">Powered by</span>
-              <span className="font-semibold text-primary-600">AI</span>
+              <span className="font-semibold text-primary-600">Gitvim</span>
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@ function App() {
       {/* Footer */}
       <footer className="mt-12 py-8 bg-white">
         <div className="max-w-7xl mx-auto px-4 text-center text-gray-600">
-          <p>© 2026 AI 简历优化器. 助你求职成功！</p>
+          <p>© 2026 Gitvim. 让 AI 赋能每一个创作者</p>
         </div>
       </footer>
     </div>
