@@ -1,4 +1,6 @@
 pub mod resume;
+pub mod auth;
+pub mod usage;
 
 use axum::{Json, extract::State};
 use serde_json::{json, Value};

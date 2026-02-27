@@ -20,7 +20,7 @@ sqlx = { version = "0.7", features = ["runtime-tokio-native-tls", "postgres", "u
 # Redis
 redis = { version = "0.25", features = ["tokio-comp", "connection-manager"] }
 
-# Authentication
+# Authentication & Security
 jsonwebtoken = "9"
 argon2 = "0.5"
 
@@ -30,16 +30,22 @@ uuid = { version = "1", features = ["v4", "serde"] }
 # Date/Time
 chrono = { version = "0.4", features = ["serde"] }
 
-# HTTP Client
-reqwest = { version = "0.11", features = ["json"] }
+# Validation
+validator = { version = "0.16", features = ["derive"] }
 
-# Logging
+# Async traits
+async-trait = "0.1"
+
+# Tracing & Logging
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Environment
+dotenvy = "0.15"
+
+# HTTP Client
+reqwest = { version = "0.11", features = ["json"] }
 
 # Error handling
 anyhow = "1"
 thiserror = "1"
-
-# Configuration
-dotenv = "0.15"
