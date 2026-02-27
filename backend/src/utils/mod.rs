@@ -1,3 +1,5 @@
+pub mod auth;
+
 use sqlx::PgPool;
 use redis::Client;
 
@@ -17,3 +19,5 @@ pub fn get_jwt_secret() -> String {
     std::env::var("JWT_SECRET")
         .unwrap_or_else(|_| "ai-resume-secret-key-2026".to_string())
 }
+
+pub use auth::*;
