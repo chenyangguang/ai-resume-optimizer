@@ -5,12 +5,10 @@
 *.pem
 *.key
 *.crt
-
-# SSL 证书
 ssl/
 *.ssl
 
-# ===== 前端 =====
+# ===== 前端 (React + Vite) =====
 # 依赖
 frontend/node_modules/
 .pnp
@@ -18,8 +16,10 @@ frontend/node_modules/
 
 # 构建产物
 frontend/dist/
-dist-ssr/
 frontend/build/
+dist-ssr/
+
+# Vite
 *.local
 
 # 日志
@@ -29,26 +29,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-
-# 编辑器
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
 # ===== 后端 (Rust) =====
-# 构建产物
 target/
 **/*.rs.bk
 *.pdb
-
-# Cargo 锁文件（库项目不提交）
-# Cargo.lock
 
 # ===== 数据库 =====
 *.db
@@ -89,12 +73,36 @@ temp/
 
 # ===== IDE =====
 .vscode/
+!.vscode/extensions.json
 .idea/
 *.iml
 *.ipr
 *.iws
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# ===== 其他 =====
+# ===== 工具 & 缓存 =====
 .cache/
+.git-rewrite/
+.sisyphus/
 coverage/
 .nyc_output/
+*.tsbuildinfo
+
+# ===== Node.js =====
+node_modules/
+jspm_packages/
+.npm
+.eslintcache
+.stylelintcache
+.node_repl_history
+*.tgz
+.yarn-integrity
+lib-cov
+.grunt
+.lock-wscript
+.node_version
+.npmrc
