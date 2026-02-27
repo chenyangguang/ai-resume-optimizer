@@ -1,0 +1,20 @@
+// 🚀 快速集成方案 - 在现有 main.rs 中添加认证路由
+
+// 需要添加的内容：
+
+// 1. 在 mod 声明部分添加：
+mod models;
+mod middleware;
+
+// 2. 在路由部分添加（在现有路由之后）：
+.route("/api/auth/register", post(routes::auth::register))
+.route("/api/auth/login", post(routes::auth::login))
+.route("/api/usage/check", get(routes::usage::check_usage))
+.route("/api/usage/stats", get(routes::usage::get_usage_stats))
+
+// 3. 如果编译出错，可以先注释掉认证相关代码，确保服务能运行
+
+// 📝 注意事项：
+// - 确保所有模块路径正确
+// - 检查 use 语句
+// - 测试每个路由
