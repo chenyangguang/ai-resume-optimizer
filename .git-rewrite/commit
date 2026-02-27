@@ -1,0 +1,11 @@
+tree 48cc42e4a448d054d9e489dd1ab0a859be947d78
+author chenyangguang <vim.09071@gmail.com> 1772151861 +0800
+committer chenyangguang <vim.09071@gmail.com> 1772151861 +0800
+
+feat: AI Resume Optimizer MVP complete
+
+- Backend: Rust (Axum) + PostgreSQL + Redis
+- Frontend: React + TypeScript + Tailwind CSS
+- Features: Resume optimization, scoring, cover letter generation
+- APIs: 4 endpoints for resume processing
+- Ready for deployment and testing
