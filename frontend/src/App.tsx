@@ -1,14 +1,16 @@
 import { useState } from 'react'
+import ResumeGenerator from './components/ResumeGenerator'
 import ResumeOptimizer from './components/ResumeOptimizer'
 import ResumeScorer from './components/ResumeScorer'
 import CoverLetterGenerator from './components/CoverLetterGenerator'
 
-type Tab = 'optimize' | 'score' | 'cover-letter'
+type Tab = 'generate' | 'optimize' | 'score' | 'cover-letter'
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>('optimize')
 
   const tabs = [
+    { id: 'generate' as Tab, label: '简历生成器', icon: '📄' },
     { id: 'optimize' as Tab, label: '简历优化', icon: '✨' },
     { id: 'score' as Tab, label: '简历评分', icon: '📊' },
     { id: 'cover-letter' as Tab, label: '求职信生成', icon: '✉️' },
@@ -58,32 +60,40 @@ function App() {
 
         {/* Tab Content */}
         <div className="card">
+          {activeTab === 'generate' && <ResumeGenerator />}
           {activeTab === 'optimize' && <ResumeOptimizer />}
           {activeTab === 'score' && <ResumeScorer />}
           {activeTab === 'cover-letter' && <CoverLetterGenerator />}
         </div>
 
         {/* Features */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="card">
-            <div className="text-4xl mb-4">🎯</div>
-            <h3 className="text-xl font-semibold mb-2">智能匹配</h3>
+            <div className="text-4xl mb-4">📄</div>
+            <h3 className="text-xl font-semibold mb-2">AI 简历生成</h3>
             <p className="text-gray-600">
-              根据 JD 自动优化简历，提高匹配度
+              输入信息，一键生成专业简历
             </p>
           </div>
           <div className="card">
-            <div className="text-4xl mb-4">📈</div>
-            <h3 className="text-xl font-semibold mb-2">多维度评分</h3>
+            <div className="text-4xl mb-4">🎨</div>
+            <h3 className="text-xl font-semibold mb-2">多模板选择</h3>
             <p className="text-gray-600">
-              从技能、经验、关键词等多角度评估简历
+              现代简约、专业经典、创意设计、科技极客
+            </p>
+          </div>
+          <div className="card">
+            <div className="text-4xl mb-4">📊</div>
+            <h3 className="text-xl font-semibold mb-2">智能评分</h3>
+            <p className="text-gray-600">
+              多维度评估，精准优化建议
             </p>
           </div>
           <div className="card">
             <div className="text-4xl mb-4">✉️</div>
-            <h3 className="text-xl font-semibold mb-2">一键生成求职信</h3>
+            <h3 className="text-xl font-semibold mb-2">求职信生成</h3>
             <p className="text-gray-600">
-              根据简历和职位自动生成专业求职信
+              根据简历和职位自动生成
             </p>
           </div>
         </div>
