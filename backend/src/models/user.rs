@@ -24,6 +24,9 @@ pub struct User {
     pub last_login_at: Option<NaiveDateTime>,
     pub is_active: bool,
     pub is_verified: bool,
+    pub verification_token: Option<String>,
+    pub reset_password_token: Option<String>,
+    pub reset_password_expires: Option<NaiveDateTime>,
 }
 
 #[derive(Debug, Deserialize)]

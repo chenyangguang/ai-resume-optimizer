@@ -3,19 +3,20 @@ use axum::{
     http::StatusCode,
     Json,
 };
-use argon2::{self, Config, ThreadMode, Variant, Version};
-use jsonwebtoken::{encode, EncodingKey, Header};
-use chrono::{Duration, Utc};
-use sqlx::PgPool;
+use argon2::{self, Config};
+use chrono::{Datelike, Timelike, Utc};
 use uuid::Uuid;
 
 use crate::models::user::*;
 use crate::utils::auth::create_jwt;
+use crate::utils::AppState;
 
 pub async fn register(
-    State(pool): State<PgPool>,
+    State(app_state): State<AppState>,
     Json(payload): Json<RegisterRequest>,
 ) -> Result<Json<AuthResponse>, (StatusCode, String)> {
+    let pool = &app_state.db;
+    
     // 验证邮箱格式
     if !payload.email.contains('@') {
         return Err((StatusCode::BAD_REQUEST, "Invalid email format".to_string()));
@@ -31,7 +32,7 @@ pub async fn register(
         "SELECT id FROM users WHERE email = $1",
         payload.email
     )
-    .fetch_optional(&pool)
+    .fetch_optional(pool)
     .await
     .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
@@ -44,13 +45,13 @@ pub async fn register(
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
     // 计算使用重置日期（下个月1号）
-    let now = Utc::now();
-    let usage_reset_date = now
-        .with_day(1)
-        .unwrap()
-        .checked_add_months(chrono::Months::new(1))
-        .unwrap()
-        .naive_utc();
+    let now = Utc::now().naive_utc();
+    let next_month = if now.month() == 12 {
+        now.with_year(now.year() + 1).unwrap().with_month(1).unwrap()
+    } else {
+        now.with_month(now.month() + 1).unwrap()
+    };
+    let usage_reset_date = next_month.with_day(1).unwrap();
 
     // 创建用户
     let user = sqlx::query_as!(
@@ -65,7 +66,7 @@ pub async fn register(
         payload.name,
         usage_reset_date
     )
-    .fetch_one(&pool)
+    .fetch_one(pool)
     .await
     .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
@@ -77,16 +78,18 @@ pub async fn register(
 }
 
 pub async fn login(
-    State(pool): State<PgPool>,
+    State(app_state): State<AppState>,
     Json(payload): Json<LoginRequest>,
 ) -> Result<Json<AuthResponse>, (StatusCode, String)> {
+    let pool = &app_state.db;
+    
     // 查找用户
     let user = sqlx::query_as!(
         User,
         "SELECT * FROM users WHERE email = $1",
         payload.email
     )
-    .fetch_optional(&pool)
+    .fetch_optional(pool)
     .await
     .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?
     .ok_or((StatusCode::UNAUTHORIZED, "Invalid credentials".to_string()))?;
@@ -108,7 +111,7 @@ pub async fn login(
         "UPDATE users SET last_login_at = NOW() WHERE id = $1",
         user.id
     )
-    .execute(&pool)
+    .execute(pool)
     .await
     .ok();
 
@@ -121,18 +124,7 @@ pub async fn login(
 
 // 辅助函数
 fn hash_password(password: &str) -> Result<String, argon2::Error> {
-    let config = Config {
-        variant: Variant::Argon2id,
-        version: Version::Version13,
-        mem_cost: 65536,
-        time_cost: 3,
-        lanes: 4,
-        thread_mode: ThreadMode::Parallel,
-        secret: None,
-        ad: None,
-        hash_length: None,
-    };
-
+    let config = Config::default();
     let salt = Uuid::new_v4().to_string();
     argon2::hash_encoded(password.as_bytes(), salt.as_bytes(), &config)
 }
