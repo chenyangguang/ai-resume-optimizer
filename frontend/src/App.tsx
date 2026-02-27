@@ -1,16 +1,18 @@
 import { useState } from 'react'
 import ResumeGenerator from './components/ResumeGenerator'
+import KeywordRecommendations from './components/KeywordRecommendations'
 import ResumeOptimizer from './components/ResumeOptimizer'
 import ResumeScorer from './components/ResumeScorer'
 import CoverLetterGenerator from './components/CoverLetterGenerator'
 
-type Tab = 'generate' | 'optimize' | 'score' | 'cover-letter'
+type Tab = 'generate' | 'keywords' | 'optimize' | 'score' | 'cover-letter'
 
 function App() {
   const [activeTab, setActiveTab] = useState<Tab>('optimize')
 
   const tabs = [
     { id: 'generate' as Tab, label: '简历生成器', icon: '📄' },
+    { id: 'keywords' as Tab, label: '关键词推荐', icon: '🎯' },
     { id: 'optimize' as Tab, label: '简历优化', icon: '✨' },
     { id: 'score' as Tab, label: '简历评分', icon: '📊' },
     { id: 'cover-letter' as Tab, label: '求职信生成', icon: '✉️' },
@@ -61,18 +63,26 @@ function App() {
         {/* Tab Content */}
         <div className="card">
           {activeTab === 'generate' && <ResumeGenerator />}
+          {activeTab === 'keywords' && <KeywordRecommendations />}
           {activeTab === 'optimize' && <ResumeOptimizer />}
           {activeTab === 'score' && <ResumeScorer />}
           {activeTab === 'cover-letter' && <CoverLetterGenerator />}
         </div>
 
         {/* Features */}
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-5 gap-6">
           <div className="card">
             <div className="text-4xl mb-4">📄</div>
             <h3 className="text-xl font-semibold mb-2">AI 简历生成</h3>
             <p className="text-gray-600">
               输入信息，一键生成专业简历
+            </p>
+          </div>
+          <div className="card">
+            <div className="text-4xl mb-4">🎯</div>
+            <h3 className="text-xl font-semibold mb-2">智能关键词</h3>
+            <p className="text-gray-600">
+              根据职位推荐相关技能关键词
             </p>
           </div>
           <div className="card">
